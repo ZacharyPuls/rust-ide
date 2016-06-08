@@ -1,0 +1,5 @@
+[lib]
+name = "win32-ffi"
+version = "0.1.0"
+path = "src/lib.rs"
+crate-type = ["dylib"]
