@@ -6,3 +6,4 @@ authors = ["ZachPuls <zach@zachpuls.com>"]
 [dependencies]
 libc = "0.2"
 winapi = { version = "0.1", path = "winapi" }
+gui = { version = "0.1", path = "gui" }

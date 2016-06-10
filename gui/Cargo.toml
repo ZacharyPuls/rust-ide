@@ -1,0 +1,9 @@
+[package]
+name = "gui"
+version = "0.1.0"
+authors = ["ZachPuls <zach@zachpuls.com>"]
+
+[dependencies]
+libc = "0.2"
+winapi = { version = "0.1", path = "../winapi" }
+opengl = { version = "0.1", path = "../opengl" }

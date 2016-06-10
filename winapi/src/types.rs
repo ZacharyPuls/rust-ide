@@ -22,6 +22,7 @@ pub type ULONG = u64;
 pub type QWORD = ULONG;
 
 pub type LPCSTR = *const libc::c_char;
+pub type LPCTSTR = *const Vec<UINT>;
 
 pub type LPVOID = *mut libc::c_void;
 pub type HANDLE = LPVOID;
@@ -30,6 +31,7 @@ pub type HCURSOR = HANDLE;
 pub type HICON = HANDLE;
 pub type HINSTANCE = HANDLE;
 pub type HMENU = HANDLE;
+pub type HMODULE = HANDLE;
 pub type HWND = HANDLE;
 
 pub type WNDPROC = extern "system" fn(HWND, UINT, WPARAM, LPARAM) -> LRESULT;
@@ -112,7 +114,13 @@ pub const WS_EX_LAYOUTRTL           : UINT        = 0x00400000;
 pub const WS_EX_COMPOSITED          : UINT        = 0x02000000;
 pub const WS_EX_NOACTIVATE          : UINT        = 0x08000000;
 
-pub struct WNDCLASSEXA {
+/*
+    Window Class Styles
+*/
+pub const CS_HREDRAW                : UINT        = 0x00000002;
+pub const CS_VREDRAW                : UINT        = 0x00000001;
+
+pub struct WNDCLASSEXW {
 	pub cbSize: UINT,
 	pub style: UINT,
 	pub lpfnWndProc: WNDPROC,
@@ -122,8 +130,8 @@ pub struct WNDCLASSEXA {
 	pub hIcon: HICON,
 	pub hCursor: HCURSOR,
 	pub hbrBackground: HBRUSH,
-	pub lpszMenuName: LPCSTR,
-	pub lpszClassName: LPCSTR,
+	pub lpszMenuName: LPCTSTR,
+	pub lpszClassName: LPCTSTR,
 	pub hIconSm: HICON
 }
 

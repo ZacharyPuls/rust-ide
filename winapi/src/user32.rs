@@ -2,16 +2,18 @@ extern crate libc;
 
 use ::types::*;
 
+use std::string::String;
+
 #[link(name = "user32")]
 extern "stdcall" {
-	pub fn RegisterClassExA(
-			lpWndClass : *mut WNDCLASSEXA
+	pub fn RegisterClassExW(
+			lpWndClass : *mut WNDCLASSEXW
 	) -> ATOM;
 
-	pub fn CreateWindowExA(
+	pub fn CreateWindowExW(
 		dwExStyle: DWORD,
-		lpClassName: LPCSTR,
-		lpWindowName: LPCSTR,
+		lpClassName: &str,
+		lpWindowName: &str,
 		dwStyle: DWORD,
 		X: i32,
 		Y: i32,
@@ -28,14 +30,14 @@ extern "stdcall" {
 	    nCmdShow: i32
 	) -> BOOL;
 
-	pub fn DefWindowProcA(
+	pub fn DefWindowProcW(
 	    hWnd: HWND,
 	    uMsg: UINT,
 	    wParam: WPARAM,
 	    lParam: LPARAM
 	) -> LRESULT;
 
-	pub fn GetMessageA(
+	pub fn GetMessageW(
 	    lpMsg: LPMSG,
 	    hWnd: HWND,
 	    wMsgFilterMin: UINT,
@@ -46,7 +48,7 @@ extern "stdcall" {
 	    lpMsg: LPMSG
 	) -> BOOL;
 
-	pub fn DispatchMessageA(
+	pub fn DispatchMessageW(
 	    lpMsg: LPMSG
 	) -> LRESULT;
 }
