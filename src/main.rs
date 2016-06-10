@@ -4,6 +4,7 @@ extern crate winapi;
 use std::ffi::CString;
 
 use winapi::types::*;
+use winapi::messages::*;
 use winapi::user32::*;
 
 pub const VERSION: &'static str = "0.1.0";
@@ -11,7 +12,11 @@ pub const VERSION: &'static str = "0.1.0";
 extern "system" fn wnd_proc(hWnd: HWND, uMsg: UINT, wParam: WPARAM,lParam:
 LPARAM) ->
  LRESULT {
-    unsafe { DefWindowProcA(hWnd, uMsg, wParam, lParam) }
+    match uMsg {
+        WM_CLOSE => std::process::exit(0),
+        _ => unsafe { DefWindowProcA(hWnd, uMsg, wParam, lParam) },
+    }
+
 }
 
 #[link_args = "-Wl,--subsystem,windows"]
@@ -40,10 +45,10 @@ fn main() {
 	    RegisterClassExA(wndClassEx);
 
 	    let hWnd : HWND = CreateWindowExA(
-	        0x00040000,
+	        WS_EX_APPWINDOW,
             lpszClassName,
             CString::new("Rust IDE").unwrap().as_ptr(),
-            0x00000000,
+            WS_OVERLAPPEDWINDOW,
             0x80000000,
             0x80000000,
             640,
@@ -56,6 +61,12 @@ fn main() {
 
         ShowWindow(hWnd, SW_SHOW);
 
-        loop{}
+        let mut msg: MSG = MSG { hWnd: 0 as HWND, message: 0 as UINT, wParam: 0 as WPARAM, lParam: 0 as LPARAM, time: 0 as DWORD, pt: POINT{x: 0,y: 0} };
+        let lpMsg = &mut msg as *mut MSG;
+
+        while GetMessageA(lpMsg, hWnd, 0 as UINT, 0 as UINT) != 0 {
+            TranslateMessage(lpMsg);
+            DispatchMessageA(lpMsg);
+        }
      }
 }

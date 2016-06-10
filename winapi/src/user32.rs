@@ -34,4 +34,19 @@ extern "stdcall" {
 	    wParam: WPARAM,
 	    lParam: LPARAM
 	) -> LRESULT;
+
+	pub fn GetMessageA(
+	    lpMsg: LPMSG,
+	    hWnd: HWND,
+	    wMsgFilterMin: UINT,
+	    wMsgFilterMax: UINT
+	) -> BOOL;
+
+	pub fn TranslateMessage(
+	    lpMsg: LPMSG
+	) -> BOOL;
+
+	pub fn DispatchMessageA(
+	    lpMsg: LPMSG
+	) -> LRESULT;
 }
