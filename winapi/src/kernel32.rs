@@ -4,7 +4,7 @@ use ::types::*;
 
 #[link(name = "kernel32")]
 extern "stdcall" {
-    pub fn GetModuleHandleW(
-        lpModuleName: String
+    pub fn GetModuleHandleA(
+        lpModuleName: &'static str
     ) -> HMODULE;
 }

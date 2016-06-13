@@ -6,11 +6,11 @@ use std::string::String;
 
 #[link(name = "user32")]
 extern "stdcall" {
-	pub fn RegisterClassExW(
-			lpWndClass : *mut WNDCLASSEXW
+	pub fn RegisterClassExA(
+			lpWndClass : *mut WNDCLASSEXA
 	) -> ATOM;
 
-	pub fn CreateWindowExW(
+	pub fn CreateWindowExA(
 		dwExStyle: DWORD,
 		lpClassName: &str,
 		lpWindowName: &str,
@@ -30,14 +30,14 @@ extern "stdcall" {
 	    nCmdShow: i32
 	) -> BOOL;
 
-	pub fn DefWindowProcW(
+	pub fn DefWindowProcA(
 	    hWnd: HWND,
 	    uMsg: UINT,
 	    wParam: WPARAM,
 	    lParam: LPARAM
 	) -> LRESULT;
 
-	pub fn GetMessageW(
+	pub fn GetMessageA(
 	    lpMsg: LPMSG,
 	    hWnd: HWND,
 	    wMsgFilterMin: UINT,
@@ -48,7 +48,7 @@ extern "stdcall" {
 	    lpMsg: LPMSG
 	) -> BOOL;
 
-	pub fn DispatchMessageW(
+	pub fn DispatchMessageA(
 	    lpMsg: LPMSG
 	) -> LRESULT;
 }

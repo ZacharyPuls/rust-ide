@@ -22,7 +22,7 @@ pub type ULONG = u64;
 pub type QWORD = ULONG;
 
 pub type LPCSTR = *const libc::c_char;
-pub type LPCTSTR = *const Vec<UINT>;
+pub type LPCTSTR = *const Vec<USHORT>;
 
 pub type LPVOID = *mut libc::c_void;
 pub type HANDLE = LPVOID;
@@ -120,7 +120,7 @@ pub const WS_EX_NOACTIVATE          : UINT        = 0x08000000;
 pub const CS_HREDRAW                : UINT        = 0x00000002;
 pub const CS_VREDRAW                : UINT        = 0x00000001;
 
-pub struct WNDCLASSEXW {
+pub struct WNDCLASSEXA {
 	pub cbSize: UINT,
 	pub style: UINT,
 	pub lpfnWndProc: WNDPROC,
@@ -130,8 +130,8 @@ pub struct WNDCLASSEXW {
 	pub hIcon: HICON,
 	pub hCursor: HCURSOR,
 	pub hbrBackground: HBRUSH,
-	pub lpszMenuName: LPCTSTR,
-	pub lpszClassName: LPCTSTR,
+	pub lpszMenuName: &'static str,
+	pub lpszClassName: &'static str,
 	pub hIconSm: HICON
 }
 

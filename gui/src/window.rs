@@ -8,8 +8,6 @@ use winapi::user32::*;
 use winapi::kernel32::*;
 
 use std::ffi::CString;
-use std::ffi::OsStr;
-use std::os::ext::ffi::OsStrExt;
 
 const DEFAULT_WINDOW_CLASS_STYLE: DWORD = CS_HREDRAW | CS_VREDRAW;
 const DEFAULT_WINDOW_STYLE: DWORD = WS_VISIBLE;
@@ -21,7 +19,7 @@ fn display_func() {
 extern "system" fn wnd_proc(h_wnd: HWND, u_msg: UINT, w_param: WPARAM, l_param: LPARAM) -> LRESULT {
     match u_msg {
         WM_CLOSE => std::process::exit(0),
-        _ => unsafe { DefWindowProcW(h_wnd, u_msg, w_param, l_param) },
+        _ => unsafe { DefWindowProcA(h_wnd, u_msg, w_param, l_param) },
     }
 }
 
@@ -34,14 +32,12 @@ pub fn register_display_callback(func: Box<Fn() -> ()>) {
 
 pub unsafe fn create_window(title: &'static str, x: i32, y: i32, width: i32, height: i32, background_color: HBRUSH)  {
 
-    let lpsz_title = OsStr::new(title).encode_wide().chain(Some(0).into_iter()).collect::<Vec<_>>();
-
     println!("Creating window with title {}", title);
 
-    let current_hinstance: HINSTANCE = GetModuleHandleW(String::from("")) as HINSTANCE;
+    let current_hinstance: HINSTANCE = GetModuleHandleA("") as HINSTANCE;
 
-    let wnd_class_ex: *mut WNDCLASSEXW = &mut WNDCLASSEXW {
-        cbSize: std::mem::size_of::<WNDCLASSEXW>() as UINT,
+    let wnd_class_ex: *mut WNDCLASSEXA = &mut WNDCLASSEXA {
+        cbSize: std::mem::size_of::<WNDCLASSEXA>() as UINT,
         style: DEFAULT_WINDOW_CLASS_STYLE as UINT,
         lpfnWndProc: wnd_proc as WNDPROC,
         cbClsExtra: 0,
@@ -51,16 +47,16 @@ pub unsafe fn create_window(title: &'static str, x: i32, y: i32, width: i32, hei
         hCursor: 0 as HCURSOR,
         hbrBackground: background_color,
         lpszMenuName: "",
-        lpszClassName: lpsz_title,
+        lpszClassName: title,
         hIconSm: 0 as HICON
     };
 
-    RegisterClassExW(wnd_class_ex);
+    RegisterClassExA(wnd_class_ex);
 
-    let h_wnd: HWND = CreateWindowExW(
+    let h_wnd: HWND = CreateWindowExA(
         DEFAULT_WINDOW_EX_STYLE as DWORD,
-        lpsz_title,
-        lpsz_title,
+        title,
+        title,
         DEFAULT_WINDOW_STYLE,
         x,
         y,
@@ -86,9 +82,9 @@ pub unsafe fn create_window(title: &'static str, x: i32, y: i32, width: i32, hei
 
     let lp_msg = &mut msg as LPMSG;
 
-    while GetMessageW(lp_msg, h_wnd, 0 as UINT, 0 as UINT) != 0 {
+    while GetMessageA(lp_msg, h_wnd, 0 as UINT, 0 as UINT) != 0 {
         TranslateMessage(lp_msg);
-        DispatchMessageW(lp_msg);
+        DispatchMessageA(lp_msg);
 
         display_func();
     }
